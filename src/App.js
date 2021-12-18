@@ -117,6 +117,7 @@ const App = () => {
               color="success"
               onClick={() => handleScore(value)}
               disabled={passedUserCount === players.length - 1}
+              fullWidth
             >
               {value}
             </Button>
@@ -129,6 +130,7 @@ const App = () => {
               color="error"
               onClick={handleError}
               disabled={passedUserCount === players.length - 1}
+              fullWidth
             >
               ERROR
             </Button>
@@ -136,7 +138,7 @@ const App = () => {
         }
         {
           <Grid item xs={3} sm={3} md={3}>
-            <Button variant="contained" color="primary" onClick={handleResetAll}>
+            <Button variant="contained" color="primary" onClick={handleResetAll} fullWidth>
               RESET ALL
             </Button>
           </Grid>

@@ -22,14 +22,14 @@ const useStyles = makeStyles((theme) =>
     playerName: {
       padding: theme.spacing(1),
       // textAlign: "right",
-      width: "120px",
+      width: "100px",
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
     score: {
       padding: theme.spacing(1),
       textAlign: "center",
-      width: "100px",
+      width: "80px",
     },
     error: {
       width: "60px",
