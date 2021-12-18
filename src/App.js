@@ -8,7 +8,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UserScore from "./components/user-score";
 
 import Player from "./player";
-import { PlaylistRemoveSharp } from "@mui/icons-material";
 
 // スタイルを適用する
 // 引数に作成したthemeを受け取る
