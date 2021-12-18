@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/molkky-score-board/static/css/main.e6c13ad2.css",
+    "main.js": "/molkky-score-board/static/js/main.5db8cba1.js",
+    "index.html": "/molkky-score-board/index.html",
+    "main.e6c13ad2.css.map": "/molkky-score-board/static/css/main.e6c13ad2.css.map",
+    "main.5db8cba1.js.map": "/molkky-score-board/static/js/main.5db8cba1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.5db8cba1.js"
+  ]
+}
