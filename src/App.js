@@ -6,7 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import ListUsers from "./components/list-users";
-import DialogNickname from "./components/dialog-nickname";
+import DialogEditUser from "./components/dialog-edit-user";
 
 import Player from "./player";
 
@@ -64,10 +64,10 @@ const App = () => {
     setOpenNicknameDialog(true);
   };
 
-  const handleCloseDialogNickname = (value) => {
+  const handleCloseDialogNickname = (player) => {
     setOpenNicknameDialog(false);
-    if (value) {
-      const newPlayers = [...players, new Player(value)];
+    if (player) {
+      const newPlayers = [...players, player];
       setPlayers(newPlayers);
       saveUsersStorage(newPlayers.map((player) => player.name));
     }
@@ -121,6 +121,11 @@ const App = () => {
         selectedPlayerIndex={selectedPlayer}
         onSelectUser={setSelectedPlayer}
         onDeleteUser={deleteUser}
+        onSortUsers={(sortedUsers) => {
+          setPlayers(sortedUsers);
+          setSelectedPlayer(-1);
+          saveUsersStorage(sortedUsers.map((player) => player.name));
+        }}
       />
       <IconButton onClick={handleAddPlayer}>
         <AddIcon />
@@ -132,11 +137,10 @@ const App = () => {
         alignItems="center"
         spacing={1}
         columns={3}
-        xs={3}
         className={classes.scoreButtons}
       >
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
-          <Grid key={value} item xs={1} sm={1} md={1}>
+          <Grid item key={value} xs={1} sm={1} md={1}>
             <Button
               variant="outlined"
               color="success"
@@ -164,7 +168,7 @@ const App = () => {
           </Grid>
         }
       </Grid>
-      <DialogNickname open={openNicknameDialog} onClose={handleCloseDialogNickname} />
+      <DialogEditUser open={openNicknameDialog} onClose={handleCloseDialogNickname} />
     </Container>
   );
 };
