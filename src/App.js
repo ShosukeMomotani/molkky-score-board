@@ -1,10 +1,11 @@
 import * as React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 
-import { Container, Box, Typography, Button, Stack, IconButton, Grid } from "@mui/material";
+import { AppBar, Toolbar, Container, Box, Typography, Button, IconButton, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import MenuIcon from "@mui/icons-material/Menu";
 
-import UserScore from "./components/user-score";
+import ListUsers from "./components/list-users";
 import DialogNickname from "./components/dialog-nickname";
 
 import Player from "./player";
@@ -14,10 +15,11 @@ import Player from "./player";
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      padding: theme.spacing(2),
+      // padding: theme.spacing(2),
       textAlign: "center",
     },
     scoreButtons: {},
+    toolbarMargin: theme.mixins.toolbar,
   })
 );
 
@@ -103,28 +105,23 @@ const App = () => {
 
   return (
     <Container className={classes.root} maxWidth="xs">
-      <Typography variant="h2" component="h2">
-        Molkky Score Board
-      </Typography>
-      <Box m={2}></Box>
-      <Stack spacing={1}>
-        {players.map((player, i) => (
-          <div
-            key={i}
-            onClick={() => {
-              setSelectedPlayer(i);
-            }}
-          >
-            <UserScore
-              player={player}
-              selected={i === selectedPlayer}
-              deleteUser={() => {
-                deleteUser(i);
-              }}
-            ></UserScore>
-          </div>
-        ))}
-      </Stack>
+      <AppBar position="fixed">
+        <Toolbar variant="dense">
+          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+            <MenuIcon />
+          </IconButton>{" "}
+          <Typography variant="h4" component="div">
+            Molkky Score Board
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <div className={classes.toolbarMargin} />
+      <ListUsers
+        players={players}
+        selectedPlayerIndex={selectedPlayer}
+        onSelectUser={setSelectedPlayer}
+        onDeleteUser={deleteUser}
+      />
       <IconButton onClick={handleAddPlayer}>
         <AddIcon />
       </IconButton>
@@ -141,7 +138,7 @@ const App = () => {
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
           <Grid key={value} item xs={1} sm={1} md={1}>
             <Button
-              variant="contained"
+              variant="outlined"
               color="success"
               onClick={() => handleScore(value)}
               disabled={isGameFinished()}
@@ -154,14 +151,14 @@ const App = () => {
         ))}
         {
           <Grid item xs={2} sm={2} md={2}>
-            <Button variant="contained" color="error" onClick={handleError} disabled={isGameFinished()} fullWidth>
+            <Button variant="outlined" color="error" onClick={handleError} disabled={isGameFinished()} fullWidth>
               ERROR
             </Button>
           </Grid>
         }
         {
           <Grid item xs={1} sm={1} md={1}>
-            <Button variant="contained" color="primary" onClick={handleResetAll} fullWidth>
+            <Button variant="outlined" color="primary" onClick={handleResetAll} fullWidth>
               RESET ALL
             </Button>
           </Grid>
