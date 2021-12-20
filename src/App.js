@@ -21,10 +21,18 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+const STORAGRE_USERS_KEY = "USERS";
+const saveUsersStorage = (users) => {
+  localStorage.setItem(STORAGRE_USERS_KEY, JSON.stringify(users));
+};
+const loadUsersStorage = () => {
+  return JSON.parse(localStorage.getItem(STORAGRE_USERS_KEY) || "[]");
+};
+
 const App = () => {
   const classes = useStyles();
 
-  const [players, setPlayers] = React.useState(["aaaa", "bbbb", "cccc", "ddddd"].map((name) => new Player(name)));
+  const [players, setPlayers] = React.useState([]);
   const [selectedPlayer, setSelectedPlayer] = React.useState(0);
   const [passedUserCount, setPassedUserCount] = React.useState(0);
   const [openNicknameDialog, setOpenNicknameDialog] = React.useState(false);
@@ -43,6 +51,7 @@ const App = () => {
     const newPlayers = [...players];
     newPlayers.splice(index, 1);
     setPlayers(newPlayers);
+    saveUsersStorage(newPlayers.map((player) => player.name));
   };
 
   const isGameFinished = () => {
@@ -55,7 +64,11 @@ const App = () => {
 
   const handleCloseDialogNickname = (value) => {
     setOpenNicknameDialog(false);
-    if (value) setPlayers([...players, new Player(value)]);
+    if (value) {
+      const newPlayers = [...players, new Player(value)];
+      setPlayers(newPlayers);
+      saveUsersStorage(newPlayers.map((player) => player.name));
+    }
   };
 
   const handleScore = (value) => {
@@ -82,6 +95,11 @@ const App = () => {
     setSelectedPlayer(0);
     setPassedUserCount(0);
   };
+
+  // onload
+  React.useEffect(() => {
+    setPlayers(loadUsersStorage().map((name) => new Player(name)));
+  }, []);
 
   return (
     <Container className={classes.root} maxWidth="xs">
