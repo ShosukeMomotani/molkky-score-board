@@ -1,36 +1,13 @@
 import * as React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 
-import { Dialog, DialogTitle, DialogActions, TextField, Button } from "@mui/material";
+import { Dialog, DialogContentText, DialogContent, DialogActions, TextField, Button } from "@mui/material";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    // playerName: {
-    //   padding: theme.spacing(1),
-    //   textAlign: "right",
-    //   width: "150px",
-    //   overflow: "hidden",
-    //   textOverflow: "ellipsis",
-    // },
-    playerName: {
-      padding: theme.spacing(1),
-      // textAlign: "right",
-      width: "100px",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-    score: {
-      padding: theme.spacing(1),
-      textAlign: "center",
-      width: "80px",
-    },
-    error: {
-      width: "60px",
-    },
+    dialogNickname: {},
   })
 );
-
-const emails = ["username@gmail.com", "user02@gmail.com"];
 
 export default function DialogNickname({ onClose, open }) {
   const classes = useStyles();
@@ -43,16 +20,17 @@ export default function DialogNickname({ onClose, open }) {
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Name</DialogTitle>
-      <TextField
-        autoFocus
-        margin="dense"
-        id="name"
-        fullWidth
-        variant="standard"
-        onChange={(e) => setInputName(e.target.value)}
-      />
+    <Dialog onClose={handleClose} open={open} className={classes.dialogNickname}>
+      <DialogContent dividers>
+        <DialogContentText>Player Name</DialogContentText>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          variant="standard"
+          onChange={(e) => setInputName(e.target.value)}
+        />
+      </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose(null)}>Cancel</Button>
         <Button onClick={() => handleClose(inputName)} disabled={!inputName}>

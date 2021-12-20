@@ -1,9 +1,8 @@
 import * as React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 
-import { Container, Box, Typography, Button, ButtonGroup, Stack, IconButton, Grid } from "@mui/material";
+import { Container, Box, Typography, Button, Stack, IconButton, Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import UserScore from "./components/user-score";
 import DialogNickname from "./components/dialog-nickname";
@@ -17,7 +16,6 @@ const useStyles = makeStyles((theme) =>
     root: {
       padding: theme.spacing(2),
       textAlign: "center",
-      maxWidth: "500px",
     },
     scoreButtons: {},
   })
@@ -86,7 +84,7 @@ const App = () => {
   };
 
   return (
-    <Container maxWidth="lg" className={classes.root}>
+    <Container className={classes.root} maxWidth="xs">
       <Typography variant="h2" component="h2">
         Molkky Score Board
       </Typography>
@@ -129,6 +127,7 @@ const App = () => {
               color="success"
               onClick={() => handleScore(value)}
               disabled={isGameFinished()}
+              size="large"
               fullWidth
             >
               {value}

@@ -3,7 +3,6 @@ import { createStyles, makeStyles } from "@mui/styles";
 
 import { Button, Stack, Typography, IconButton, Grid } from "@mui/material";
 import EMobiledataIcon from "@mui/icons-material/EMobiledata";
-import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BlockIcon from "@mui/icons-material/Block";
 import LooksOneIcon from "@mui/icons-material/LooksOne";
@@ -12,16 +11,8 @@ import Looks3Icon from "@mui/icons-material/Looks3";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    // playerName: {
-    //   padding: theme.spacing(1),
-    //   textAlign: "right",
-    //   width: "150px",
-    //   overflow: "hidden",
-    //   textOverflow: "ellipsis",
-    // },
     playerName: {
       padding: theme.spacing(1),
-      // textAlign: "right",
       width: "100px",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -72,7 +63,5 @@ export default function UserScore({ player, selected, deleteUser }) {
         <DeleteIcon />
       </IconButton>
     </Grid>
-    // <Stack direction="row" spacing={2} justifyContent="center">
-    // </Stack>
   );
 }
