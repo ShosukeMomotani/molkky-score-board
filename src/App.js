@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import UserScore from "./components/user-score";
+import DialogNickname from "./components/dialog-nickname";
 
 import Player from "./player";
 
@@ -18,8 +19,7 @@ const useStyles = makeStyles((theme) =>
       textAlign: "center",
       maxWidth: "500px",
     },
-    scoreButtons: {
-    },
+    scoreButtons: {},
   })
 );
 
@@ -29,8 +29,11 @@ const App = () => {
   const [players, setPlayers] = React.useState(["aaaa", "bbbb", "cccc", "ddddd"].map((name) => new Player(name)));
   const [selectedPlayer, setSelectedPlayer] = React.useState(0);
   const [passedUserCount, setPassedUserCount] = React.useState(0);
+  const [openNicknameDialog, setOpenNicknameDialog] = React.useState(false);
 
   const moveToNextUser = () => {
+    if (players.filter((player) => player.isPlaying()).length < 1) return;
+
     let newSelectedPlayer = selectedPlayer;
     do {
       newSelectedPlayer = (newSelectedPlayer + 1) % players.length;
@@ -44,8 +47,17 @@ const App = () => {
     setPlayers(newPlayers);
   };
 
+  const isGameFinished = () => {
+    return players.filter((player) => player.isPlaying()).length < 1;
+  };
+
   const handleAddPlayer = () => {
-    setPlayers([...players, new Player("eeee")]);
+    setOpenNicknameDialog(true);
+  };
+
+  const handleCloseDialogNickname = (value) => {
+    setOpenNicknameDialog(false);
+    if (value) setPlayers([...players, new Player(value)]);
   };
 
   const handleScore = (value) => {
@@ -116,7 +128,7 @@ const App = () => {
               variant="contained"
               color="success"
               onClick={() => handleScore(value)}
-              disabled={passedUserCount === players.length - 1}
+              disabled={isGameFinished()}
               fullWidth
             >
               {value}
@@ -124,26 +136,21 @@ const App = () => {
           </Grid>
         ))}
         {
-          <Grid item xs={3} sm={3} md={3}>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={handleError}
-              disabled={passedUserCount === players.length - 1}
-              fullWidth
-            >
+          <Grid item xs={2} sm={2} md={2}>
+            <Button variant="contained" color="error" onClick={handleError} disabled={isGameFinished()} fullWidth>
               ERROR
             </Button>
           </Grid>
         }
         {
-          <Grid item xs={3} sm={3} md={3}>
+          <Grid item xs={1} sm={1} md={1}>
             <Button variant="contained" color="primary" onClick={handleResetAll} fullWidth>
               RESET ALL
             </Button>
           </Grid>
         }
       </Grid>
+      <DialogNickname open={openNicknameDialog} onClose={handleCloseDialogNickname} />
     </Container>
   );
 };
