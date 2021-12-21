@@ -38,7 +38,11 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
     // diable backdrop escape
     if (reason) return;
 
-    onClose(update ? new Player(name, { score, scoreMax, scoreRestart, disqualification, error }) : null);
+    onClose(
+      update
+        ? new Player(name, { score, scoreMax, scoreRestart, disqualification, error: disqualification ? error : 0 })
+        : null
+    );
 
     setName("");
     setScore(0);
