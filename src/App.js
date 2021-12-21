@@ -43,7 +43,8 @@ const App = () => {
   const [players, setPlayers] = React.useState([]);
   const [selectedPlayer, setSelectedPlayer] = React.useState(0);
   const [passedUserCount, setPassedUserCount] = React.useState(0);
-  const [openNicknameDialog, setOpenNicknameDialog] = React.useState(false);
+  const [openAddUserDialog, setOpenAddUserDialog] = React.useState(false);
+  const [isGameFinished, setIsGameFinished] = React.useState(true);
 
   const moveToNextUser = () => {
     if (players.filter((player) => player.isPlaying()).length < 1) return;
@@ -62,16 +63,16 @@ const App = () => {
     saveUsersStorage(newPlayers.map((player) => player.name));
   };
 
-  const isGameFinished = () => {
-    return players.filter((player) => player.isPlaying()).length < 1;
-  };
+  React.useEffect(() => {
+    setIsGameFinished(players.filter((player) => player.isPlaying()).length < 2);
+  }, [players]);
 
   const handleAddPlayer = () => {
-    setOpenNicknameDialog(true);
+    setOpenAddUserDialog(true);
   };
 
-  const handleCloseDialogNickname = (player) => {
-    setOpenNicknameDialog(false);
+  const handleCloseAddUserDialog = (player) => {
+    setOpenAddUserDialog(false);
     if (player) {
       const newPlayers = [...players, player];
       setPlayers(newPlayers);
@@ -86,6 +87,9 @@ const App = () => {
     if (players[selectedPlayer].isPassed()) {
       players[selectedPlayer].setRank(passedUserCount + 1);
       setPassedUserCount(passedUserCount + 1);
+      if (players.filter((player) => player.isPlaying()).length === 1) {
+        players.filter((player) => player.isPlaying())[0].setRank(passedUserCount + 2);
+      }
     }
     setPlayers([...players]);
     moveToNextUser();
@@ -93,6 +97,9 @@ const App = () => {
 
   const handleError = () => {
     players[selectedPlayer].doError();
+    if (players.filter((player) => player.isPlaying()).length === 1) {
+      players.filter((player) => player.isPlaying())[0].setRank(passedUserCount + 1);
+    }
     setPlayers([...players]);
     moveToNextUser();
   };
@@ -159,7 +166,7 @@ const App = () => {
                   variant="outlined"
                   color="success"
                   onClick={() => handleScore(value)}
-                  disabled={isGameFinished()}
+                  disabled={isGameFinished}
                   size="large"
                   fullWidth
                 >
@@ -169,7 +176,7 @@ const App = () => {
             ))}
             {
               <Grid item xs={2} sm={2} md={2}>
-                <Button variant="outlined" color="error" onClick={handleError} disabled={isGameFinished()} fullWidth>
+                <Button variant="outlined" color="error" onClick={handleError} disabled={isGameFinished} fullWidth>
                   ERROR
                 </Button>
               </Grid>
@@ -184,7 +191,7 @@ const App = () => {
           </Grid>
         </Stack>
       </Div100vh>
-      <DialogEditUser open={openNicknameDialog} onClose={handleCloseDialogNickname} />
+      <DialogEditUser open={openAddUserDialog} onClose={handleCloseAddUserDialog} />
     </Container>
   );
 };
