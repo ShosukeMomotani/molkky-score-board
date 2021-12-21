@@ -1,10 +1,11 @@
 import * as React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 
-import { AppBar, Toolbar, Container, Box, Typography, Button, IconButton, Grid, Stack } from "@mui/material";
+import { AppBar, Toolbar, Container, Typography, Button, IconButton, Grid, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 
+import Div100vh from "react-div-100vh";
 import ListUsers from "./components/list-users";
 import DialogEditUser from "./components/dialog-edit-user";
 
@@ -15,13 +16,13 @@ import Player from "./player";
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
-      // padding: theme.spacing(2),
       textAlign: "center",
-      height: "100vh",
     },
-    toolbarMargin: theme.mixins.toolbar,
+    toolbarMargin: {
+      height: "60px",
+    },
     body: {
-      height: `calc(100% - ${theme.mixins.toolbar.minHeight}px)`,
+      height: `calc(100% - 60px)`,
       paddingBottom: theme.spacing(2),
     },
     scoreButtons: {},
@@ -110,77 +111,79 @@ const App = () => {
 
   return (
     <Container className={classes.root} maxWidth="xs">
-      <AppBar position="fixed">
-        <Toolbar variant="dense">
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>{" "}
-          <Typography variant="h4" component="div">
-            Molkky Score Board
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.toolbarMargin} />
-      <Stack
-        direction="column"
-        justifyContent={{ xs: "space-between", sm: "flex-start" }}
-        alignItems="stretch"
-        className={classes.body}
-      >
-        <div>
-          <ListUsers
-            players={players}
-            selectedPlayerIndex={selectedPlayer}
-            onSelectUser={setSelectedPlayer}
-            onDeleteUser={deleteUser}
-            onSortUsers={(sortedUsers) => {
-              setPlayers(sortedUsers);
-              setSelectedPlayer(-1);
-              saveUsersStorage(sortedUsers.map((player) => player.name));
-            }}
-          />
-          <IconButton onClick={handleAddPlayer}>
-            <AddIcon />
-          </IconButton>
-        </div>
-        <Grid
-          container
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={1}
-          columns={3}
-          className={classes.scoreButtons}
+      <Div100vh>
+        <AppBar position="fixed">
+          <Toolbar variant="dense">
+            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+              <MenuIcon />
+            </IconButton>{" "}
+            <Typography variant="h4" component="div">
+              Molkky Score Board
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <div className={classes.toolbarMargin} />
+        <Stack
+          direction="column"
+          justifyContent={{ xs: "space-between", sm: "flex-start" }}
+          alignItems="stretch"
+          className={classes.body}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
-            <Grid item key={value} xs={1} sm={1} md={1}>
-              <Button
-                variant="outlined"
-                color="success"
-                onClick={() => handleScore(value)}
-                disabled={isGameFinished()}
-                size="large"
-                fullWidth
-              >
-                {value}
-              </Button>
-            </Grid>
-          ))}
-          {
-            <Grid item xs={2} sm={2} md={2}>
-              <Button variant="outlined" color="error" onClick={handleError} disabled={isGameFinished()} fullWidth>
-                ERROR
-              </Button>
-            </Grid>
-          }
-          {
-            <Grid item xs={1} sm={1} md={1}>
-              <Button variant="outlined" color="primary" onClick={handleResetAll} fullWidth>
-                RESET ALL
-              </Button>
-            </Grid>
-          }
-        </Grid>
-      </Stack>
+          <div>
+            <ListUsers
+              players={players}
+              selectedPlayerIndex={selectedPlayer}
+              onSelectUser={setSelectedPlayer}
+              onDeleteUser={deleteUser}
+              onSortUsers={(sortedUsers) => {
+                setPlayers(sortedUsers);
+                setSelectedPlayer(-1);
+                saveUsersStorage(sortedUsers.map((player) => player.name));
+              }}
+            />
+            <IconButton onClick={handleAddPlayer}>
+              <AddIcon />
+            </IconButton>
+          </div>
+          <Grid
+            container
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={1}
+            columns={3}
+            className={classes.scoreButtons}
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
+              <Grid item key={value} xs={1} sm={1} md={1}>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  onClick={() => handleScore(value)}
+                  disabled={isGameFinished()}
+                  size="large"
+                  fullWidth
+                >
+                  {value}
+                </Button>
+              </Grid>
+            ))}
+            {
+              <Grid item xs={2} sm={2} md={2}>
+                <Button variant="outlined" color="error" onClick={handleError} disabled={isGameFinished()} fullWidth>
+                  ERROR
+                </Button>
+              </Grid>
+            }
+            {
+              <Grid item xs={1} sm={1} md={1}>
+                <Button variant="outlined" color="primary" onClick={handleResetAll} fullWidth>
+                  RESET ALL
+                </Button>
+              </Grid>
+            }
+          </Grid>
+        </Stack>
+      </Div100vh>
       <DialogEditUser open={openNicknameDialog} onClose={handleCloseDialogNickname} />
     </Container>
   );
