@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/molkky-score-board/static/css/main.e6c13ad2.css",
-    "main.js": "/molkky-score-board/static/js/main.41b94f0c.js",
+    "main.js": "/molkky-score-board/static/js/main.e1b50c7f.js",
     "index.html": "/molkky-score-board/index.html",
     "main.e6c13ad2.css.map": "/molkky-score-board/static/css/main.e6c13ad2.css.map",
-    "main.41b94f0c.js.map": "/molkky-score-board/static/js/main.41b94f0c.js.map"
+    "main.e1b50c7f.js.map": "/molkky-score-board/static/js/main.e1b50c7f.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.41b94f0c.js"
+    "static/js/main.e1b50c7f.js"
   ]
 }
