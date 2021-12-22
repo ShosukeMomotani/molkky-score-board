@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createStyles, makeStyles } from "@mui/styles";
+import { createStyles, makeStyles, styled } from "@mui/styles";
 
 import {
   Dialog,
@@ -16,6 +16,15 @@ import {
 } from "@mui/material";
 
 import Player from "../player";
+
+const ScoreSlider = styled(Slider)({
+  marginTop: 50,
+  "& .MuiSlider-valueLabelLabel": {
+    whiteSpace: "pre",
+    display: "block",
+    textAlign: "center",
+  },
+});
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -71,7 +80,7 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
     <Dialog onClose={handleClose} open={open} className={classes.root}>
       <DialogTitle>プレーヤー設定</DialogTitle>
       <DialogContent dividers>
-        <Grid container rowSpacing={3} columnSpacing={2} alignItems="center">
+        <Grid container rowSpacing={2} columnSpacing={2} alignItems="center" justifyContent="center">
           <Grid item xs={12}>
             <TextField
               autoFocus
@@ -120,11 +129,8 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
               }}
             />
           </Grid>
-          <Grid item xs={2}>
-            ゴール設定
-          </Grid>
-          <Grid item xs={9} style={{ marginTop: 20 }}>
-            <Slider
+          <Grid item xs={10}>
+            <ScoreSlider
               min={0}
               max={80}
               step={5}
@@ -132,8 +138,10 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
               onChange={handleChangeScoreSettings}
               valueLabelDisplay="on"
               disableSwap
-              valueLabelFormat={(value, index) => (index === 0 ? `ドボン時：${value}` : `ゴール：${value}`)}
-            ></Slider>
+              track={false}
+              marks
+              valueLabelFormat={(value, index) => (index === 0 ? `ドボン時\n${value}` : `ゴール\n${value}`)}
+            ></ScoreSlider>
           </Grid>
           <Grid item xs={12}>
             <FormGroup>
