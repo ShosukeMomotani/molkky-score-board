@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 
-import { AppBar, Toolbar, Container, Typography, Button, IconButton, Grid, Stack } from "@mui/material";
+import { AppBar, Toolbar, Container, Typography, Button, IconButton, Grid, Stack, Menu, MenuItem } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -37,6 +37,14 @@ const loadUsersStorage = () => {
   return JSON.parse(localStorage.getItem(STORAGRE_USERS_KEY) || "[]");
 };
 
+const shuffle = ([...array]) => {
+  for (let i = array.length - 1; i >= 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 const App = () => {
   const classes = useStyles();
 
@@ -45,6 +53,21 @@ const App = () => {
   const [passedUserCount, setPassedUserCount] = React.useState(0);
   const [openAddUserDialog, setOpenAddUserDialog] = React.useState(false);
   const [isGameFinished, setIsGameFinished] = React.useState(true);
+  const [anchorMenu, setAnchorMenu] = React.useState(null);
+
+  const handleOpenMenu = (event) => {
+    setAnchorMenu(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorMenu(null);
+  };
+
+  const handleSufflePlayers = () => {
+    handleCloseMenu();
+    setPlayers(shuffle(players));
+    selectedPlayer(0);
+  };
 
   const moveToNextUser = () => {
     if (players.filter((player) => player.isPlaying()).length < 1) return;
@@ -121,9 +144,12 @@ const App = () => {
       <Div100vh>
         <AppBar position="fixed">
           <Toolbar variant="dense">
-            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+            <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={handleOpenMenu}>
               <MenuIcon />
-            </IconButton>{" "}
+            </IconButton>
+            <Menu anchorEl={anchorMenu} open={Boolean(anchorMenu)} onClose={handleCloseMenu}>
+              <MenuItem onClick={handleSufflePlayers}>シャッフル</MenuItem>
+            </Menu>
             <Typography variant="h4" component="div">
               Molkky Score Board
             </Typography>
