@@ -1,13 +1,15 @@
 import * as React from "react";
 import { createStyles, makeStyles } from "@mui/styles";
 
-import { AppBar, Toolbar, Container, Typography, Button, IconButton, Grid, Stack, Menu, MenuItem } from "@mui/material";
+import { AppBar, Toolbar, Container, Typography, Button, IconButton, Grid, Stack } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import Div100vh from "react-div-100vh";
+import MenuDrawer from "./components/menu-drawer";
 import ListUsers from "./components/list-users";
 import DialogEditUser from "./components/dialog-edit-user";
+import DialogNextGame from "./components/dialog-next-game";
 
 import Player from "./player";
 
@@ -30,11 +32,11 @@ const useStyles = makeStyles((theme) =>
 );
 
 const STORAGRE_USERS_KEY = "USERS";
-const saveUsersStorage = (users) => {
-  localStorage.setItem(STORAGRE_USERS_KEY, JSON.stringify(users));
+const savePlayersStorage = (playres) => {
+  localStorage.setItem(STORAGRE_USERS_KEY, JSON.stringify(playres.map((player) => player.toJson())));
 };
-const loadUsersStorage = () => {
-  return JSON.parse(localStorage.getItem(STORAGRE_USERS_KEY) || "[]");
+const loadPlayersStorage = () => {
+  return JSON.parse(localStorage.getItem(STORAGRE_USERS_KEY) || "[]").map((json) => new Player(json.name, { ...json }));
 };
 
 const shuffle = ([...array]) => {
@@ -52,21 +54,21 @@ const App = () => {
   const [selectedPlayer, setSelectedPlayer] = React.useState(0);
   const [passedUserCount, setPassedUserCount] = React.useState(0);
   const [openAddUserDialog, setOpenAddUserDialog] = React.useState(false);
+  const [openNextGameDialog, setOpenNextGameDialog] = React.useState(false);
   const [isGameFinished, setIsGameFinished] = React.useState(true);
-  const [anchorMenu, setAnchorMenu] = React.useState(null);
+  const [openMenu, setOpenMenu] = React.useState(false);
 
-  const handleOpenMenu = (event) => {
-    setAnchorMenu(event.currentTarget);
+  const handleOpenMenu = () => {
+    setOpenMenu(true);
   };
 
   const handleCloseMenu = () => {
-    setAnchorMenu(null);
+    setOpenMenu(false);
   };
 
   const handleSufflePlayers = () => {
-    handleCloseMenu();
     setPlayers(shuffle(players));
-    selectedPlayer(0);
+    setSelectedPlayer(0);
   };
 
   const moveToNextUser = () => {
@@ -83,7 +85,7 @@ const App = () => {
     const newPlayers = [...players];
     newPlayers.splice(index, 1);
     setPlayers(newPlayers);
-    saveUsersStorage(newPlayers.map((player) => player.name));
+    savePlayersStorage(newPlayers);
   };
 
   React.useEffect(() => {
@@ -99,8 +101,24 @@ const App = () => {
     if (player) {
       const newPlayers = [...players, player];
       setPlayers(newPlayers);
-      saveUsersStorage(newPlayers.map((player) => player.name));
+      savePlayersStorage(newPlayers);
     }
+  };
+
+  const handleNextGame = () => {
+    setOpenNextGameDialog(true);
+  };
+
+  const handleCancelNextGameDialog = () => {
+    setOpenNextGameDialog(false);
+  };
+
+  const handleCloseNextGameDialog = (newPlayers) => {
+    setOpenNextGameDialog(false);
+    newPlayers.forEach((player) => player.newGame());
+    setPlayers([...newPlayers.reverse()]);
+    setSelectedPlayer(0);
+    setPassedUserCount(0);
   };
 
   const handleScore = (value) => {
@@ -136,7 +154,7 @@ const App = () => {
 
   // onload
   React.useEffect(() => {
-    setPlayers(loadUsersStorage().map((name) => new Player(name)));
+    setPlayers(loadPlayersStorage());
   }, []);
 
   return (
@@ -147,14 +165,17 @@ const App = () => {
             <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={handleOpenMenu}>
               <MenuIcon />
             </IconButton>
-            <Menu anchorEl={anchorMenu} open={Boolean(anchorMenu)} onClose={handleCloseMenu}>
-              <MenuItem onClick={handleSufflePlayers}>シャッフル</MenuItem>
-            </Menu>
             <Typography variant="h4" component="div">
               Molkky Score Board
             </Typography>
           </Toolbar>
         </AppBar>
+        <MenuDrawer
+          open={openMenu}
+          onClose={handleCloseMenu}
+          onShuffle={handleSufflePlayers}
+          onReset={handleResetAll}
+        ></MenuDrawer>
         <div className={classes.toolbarMargin} />
         <Stack
           direction="column"
@@ -171,7 +192,7 @@ const App = () => {
               onSortUsers={(sortedUsers) => {
                 setPlayers(sortedUsers);
                 setSelectedPlayer(-1);
-                saveUsersStorage(sortedUsers.map((player) => player.name));
+                savePlayersStorage(sortedUsers);
               }}
             />
             <IconButton onClick={handleAddPlayer}>
@@ -209,8 +230,14 @@ const App = () => {
             }
             {
               <Grid item xs={1} sm={1} md={1}>
-                <Button variant="outlined" color="primary" onClick={handleResetAll} fullWidth>
-                  RESET ALL
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleNextGame}
+                  fullWidth
+                  disabled={passedUserCount === 0}
+                >
+                  NEXT GAME
                 </Button>
               </Grid>
             }
@@ -218,6 +245,12 @@ const App = () => {
         </Stack>
       </Div100vh>
       <DialogEditUser open={openAddUserDialog} onClose={handleCloseAddUserDialog} />
+      <DialogNextGame
+        open={openNextGameDialog}
+        players={[...players].sort((a, b) => (a.rank || Number.MAX_SAFE_INTEGER) - (b.rank || Number.MAX_SAFE_INTEGER))}
+        onClose={handleCancelNextGameDialog}
+        onNext={handleCloseNextGameDialog}
+      />
     </Container>
   );
 };

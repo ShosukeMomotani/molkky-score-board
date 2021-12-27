@@ -1,5 +1,5 @@
 class Player {
-  constructor(name, { score = 0, scoreMax = 50, scoreRestart = 25, disqualification = true, error = 0 } = {}) {
+  constructor(name, { score = 0, scoreMax = 50, scoreRestart = 25, disqualification = true, error = 0, win = 0 } = {}) {
     this.name = name;
     this.score = score;
     this.scoreMax = scoreMax;
@@ -7,11 +7,15 @@ class Player {
     this.error = error;
     this.rank = 0;
     this.disqualification = disqualification;
-
-    this._print();
+    this.win = win;
   }
 
   reset() {
+    this.newGame();
+    this.win = 0;
+  }
+
+  newGame() {
     this.score = 0;
     this.error = 0;
     this.rank = 0;
@@ -43,8 +47,8 @@ class Player {
     return !this.isPassed() && !this.isDropped();
   }
 
-  _print() {
-    console.log({
+  toJson() {
+    return {
       name: this.name,
       score: this.score,
       scoreMax: this.scoreMax,
@@ -52,7 +56,11 @@ class Player {
       error: this.error,
       rank: this.rank,
       disqualification: this.disqualification,
-    });
+      win: this.win,
+    };
+  }
+  _print() {
+    console.log(this.toJson());
   }
 }
 

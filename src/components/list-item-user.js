@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createStyles, makeStyles } from "@mui/styles";
+import { createStyles, makeStyles, styled } from "@mui/styles";
 
 import DialogEditUser from "./dialog-edit-user";
 
@@ -14,6 +14,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  Badge,
 } from "@mui/material";
 import LooksOneIcon from "@mui/icons-material/LooksOne";
 import LooksTwoIcon from "@mui/icons-material/LooksTwo";
@@ -23,6 +24,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EMobiledataIcon from "@mui/icons-material/EMobiledata";
 import MenuIcon from "@mui/icons-material/Menu";
 import EditIcon from "@mui/icons-material/Edit";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: -14,
+    top: 14,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+  },
+}));
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -111,13 +121,19 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
           )}
         </ListItemAvatar>
         <ListItemText
-          primary={player.name}
-          primaryTypographyProps={{
-            variant: "h4",
-            fontWeight: selected ? "bold" : "normal",
-            color: player.isDropped() ? "gray" : "normal",
-            marginY: 0.5,
-          }}
+          disableTypography
+          primary={
+            <StyledBadge badgeContent={player.win} color="success">
+              <Typography
+                variant="h4"
+                fontWeight={selected ? "bold" : "normal"}
+                color={player.isDropped() ? "gray" : "normal"}
+                marginY={0.5}
+              >
+                {player.name}
+              </Typography>
+            </StyledBadge>
+          }
         />
         <Typography
           variant="h4"
