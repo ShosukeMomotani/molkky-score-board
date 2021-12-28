@@ -11,7 +11,14 @@ import ListUsers from "./components/list-users";
 import DialogEditUser from "./components/dialog-edit-user";
 import DialogNextGame from "./components/dialog-next-game";
 
-import Player from "./player";
+import {
+  savePlayersStorage,
+  loadPlayersStorage,
+  saveSelectedPlayerStorage,
+  loadSelectedPlayerStorage,
+  savePassedPlayerCountStorage,
+  loadPassedPlayerCountStorage,
+} from "./util/storage";
 
 // スタイルを適用する
 // 引数に作成したthemeを受け取る
@@ -31,14 +38,6 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-const STORAGRE_USERS_KEY = "USERS";
-const savePlayersStorage = (playres) => {
-  localStorage.setItem(STORAGRE_USERS_KEY, JSON.stringify(playres.map((player) => player.toJson())));
-};
-const loadPlayersStorage = () => {
-  return JSON.parse(localStorage.getItem(STORAGRE_USERS_KEY) || "[]").map((json) => new Player(json.name, { ...json }));
-};
-
 const shuffle = ([...array]) => {
   for (let i = array.length - 1; i >= 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -50,9 +49,9 @@ const shuffle = ([...array]) => {
 const App = () => {
   const classes = useStyles();
 
-  const [players, setPlayers] = React.useState([]);
-  const [selectedPlayer, setSelectedPlayer] = React.useState(0);
-  const [passedUserCount, setPassedUserCount] = React.useState(0);
+  const [players, setPlayers] = React.useState(loadPlayersStorage());
+  const [selectedPlayer, setSelectedPlayer] = React.useState(loadSelectedPlayerStorage());
+  const [passedUserCount, setPassedUserCount] = React.useState(loadPassedPlayerCountStorage());
   const [openAddUserDialog, setOpenAddUserDialog] = React.useState(false);
   const [openNextGameDialog, setOpenNextGameDialog] = React.useState(false);
   const [isGameFinished, setIsGameFinished] = React.useState(true);
@@ -90,7 +89,16 @@ const App = () => {
 
   React.useEffect(() => {
     setIsGameFinished(players.filter((player) => player.isPlaying()).length < 2);
+    savePlayersStorage(players);
   }, [players]);
+
+  React.useEffect(() => {
+    saveSelectedPlayerStorage(selectedPlayer);
+  }, [selectedPlayer]);
+
+  React.useEffect(() => {
+    savePassedPlayerCountStorage(passedUserCount);
+  }, [passedUserCount]);
 
   const handleAddPlayer = () => {
     setOpenAddUserDialog(true);
@@ -151,11 +159,6 @@ const App = () => {
     setSelectedPlayer(0);
     setPassedUserCount(0);
   };
-
-  // onload
-  React.useEffect(() => {
-    setPlayers(loadPlayersStorage());
-  }, []);
 
   return (
     <Container className={classes.root} maxWidth="xs">

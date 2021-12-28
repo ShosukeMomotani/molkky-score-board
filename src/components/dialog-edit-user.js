@@ -15,7 +15,7 @@ import {
   Slider,
 } from "@mui/material";
 
-import Player from "../player";
+import Player from "../util/player";
 
 const ScoreSlider = styled(Slider)({
   marginTop: 50,
