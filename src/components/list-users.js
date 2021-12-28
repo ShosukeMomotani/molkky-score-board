@@ -9,12 +9,12 @@ import ListItemUser from "./list-item-user";
 
 // const useStyles = makeStyles((theme) => createStyles({}));
 
-export default function ListUsers({ players, selectedPlayerIndex, onSelectUser, onDeleteUser, onSortUsers }) {
+export default function ListUsers({ players, selectedPlayerIndex, onSelectUser, onUpdateUsers }) {
   // const classes = useStyles();
 
   const onDrop = ({ removedIndex, addedIndex }) => {
     const newPlayers = arrayMoveImmutable(players, removedIndex, addedIndex);
-    onSortUsers(newPlayers);
+    onUpdateUsers(newPlayers);
   };
 
   return (
@@ -30,13 +30,14 @@ export default function ListUsers({ players, selectedPlayerIndex, onSelectUser, 
                   onSelectUser(index);
                 }}
                 onDelete={() => {
-                  onDeleteUser(index);
+                  const newPlayers = [...players];
+                  newPlayers.splice(index, 1);
+                  onUpdateUsers(newPlayers);
                 }}
                 onEditPlayer={(player) => {
-                  console.log(player);
                   const newPlayers = [...players];
                   newPlayers.splice(index, 1, player);
-                  onSortUsers(newPlayers);
+                  onUpdateUsers(newPlayers);
                 }}
               ></ListItemUser>
             </Draggable>

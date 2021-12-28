@@ -80,16 +80,9 @@ const App = () => {
     setSelectedPlayer(newSelectedPlayer);
   };
 
-  const deleteUser = (index) => {
-    const newPlayers = [...players];
-    newPlayers.splice(index, 1);
-    setPlayers(newPlayers);
-    savePlayersStorage(newPlayers);
-  };
-
   React.useEffect(() => {
-    setIsGameFinished(players.filter((player) => player.isPlaying()).length < 2);
     savePlayersStorage(players);
+    setIsGameFinished(players.filter((player) => player.isPlaying()).length < 2);
   }, [players]);
 
   React.useEffect(() => {
@@ -191,11 +184,8 @@ const App = () => {
               players={players}
               selectedPlayerIndex={selectedPlayer}
               onSelectUser={setSelectedPlayer}
-              onDeleteUser={deleteUser}
-              onSortUsers={(sortedUsers) => {
-                setPlayers(sortedUsers);
-                setSelectedPlayer(-1);
-                savePlayersStorage(sortedUsers);
+              onUpdateUsers={(updateUsers) => {
+                setPlayers([...updateUsers]);
               }}
             />
             <IconButton onClick={handleAddPlayer}>

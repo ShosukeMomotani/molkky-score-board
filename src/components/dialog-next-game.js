@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createStyles, makeStyles, styled } from "@mui/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 
 import {
   Dialog,
@@ -31,7 +31,7 @@ export default function DialogNextGame({ players, open, onNext, onClose }) {
   const [winPoints, setWinPoints] = React.useState(players.map(() => 0));
 
   React.useEffect(() => {
-    setWinPoints([...winPoints, ...new Array(players.length - winPoints.length).fill(0)]);
+    setWinPoints([...winPoints, ...new Array(Math.max(players.length - winPoints.length, 0)).fill(0)]);
   }, [players]);
 
   return (

@@ -91,7 +91,6 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
             </MenuItem>
             <MenuItem
               onClick={() => {
-                console.log("onDelete()");
                 handleCloseMenu();
                 onDelete();
               }}
