@@ -131,6 +131,7 @@ const App = () => {
       setPassedUserCount(passedUserCount + 1);
       if (players.filter((player) => player.isPlaying()).length === 1) {
         players.filter((player) => player.isPlaying())[0].setRank(passedUserCount + 2);
+        setPassedUserCount(passedUserCount + 2);
       }
     }
     setPlayers([...players]);
@@ -141,6 +142,7 @@ const App = () => {
     players[selectedPlayer].doError();
     if (players.filter((player) => player.isPlaying()).length === 1) {
       players.filter((player) => player.isPlaying())[0].setRank(passedUserCount + 1);
+      setPassedUserCount(passedUserCount + 1);
     }
     setPlayers([...players]);
     moveToNextUser();

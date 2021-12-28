@@ -1,11 +1,14 @@
 class Player {
-  constructor(name, { score = 0, scoreMax = 50, scoreRestart = 25, disqualification = true, error = 0, win = 0 } = {}) {
+  constructor(
+    name,
+    { score = 0, scoreMax = 50, scoreRestart = 25, disqualification = true, error = 0, win = 0, rank = 0 } = {}
+  ) {
     this.name = name;
     this.score = score;
     this.scoreMax = scoreMax;
     this.scoreRestart = scoreRestart;
     this.error = error;
-    this.rank = 0;
+    this.rank = rank;
     this.disqualification = disqualification;
     this.win = win;
   }

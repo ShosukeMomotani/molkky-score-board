@@ -8,7 +8,6 @@ import {
   ListItemButton,
   ListItemText,
   IconButton,
-  Stack,
   ListItemAvatar,
   Typography,
   Menu,
@@ -21,9 +20,13 @@ import LooksTwoIcon from "@mui/icons-material/LooksTwo";
 import Looks3Icon from "@mui/icons-material/Looks3";
 import BlockIcon from "@mui/icons-material/Block";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EMobiledataIcon from "@mui/icons-material/EMobiledata";
 import MenuIcon from "@mui/icons-material/Menu";
 import EditIcon from "@mui/icons-material/Edit";
+
+import BatteryChargingFullIcon from "@mui/icons-material/BatteryChargingFull";
+import BatteryFullIcon from "@mui/icons-material/BatteryFull";
+import Battery60Icon from "@mui/icons-material/Battery60";
+import Battery30Icon from "@mui/icons-material/Battery30";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -147,11 +150,17 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
           sx={{ mx: 0.5 }}
           color={player.isDropped() ? "gray" : "normal"}
         >{`/${player.scoreMax}`}</Typography>
-        <Stack direction="row" className={classes.ereaErrorCount}>
-          {new Array(player.error).fill().map((value, index) => (
-            <EMobiledataIcon color="error" key={index} />
-          ))}
-        </Stack>
+        {!player.disqualification ? (
+          <BatteryChargingFullIcon color="info" />
+        ) : player.error === 0 ? (
+          <BatteryFullIcon color="success" />
+        ) : player.error === 1 ? (
+          <Battery60Icon color="warning" />
+        ) : player.error === 2 ? (
+          <Battery30Icon color="error" />
+        ) : (
+          <BatteryFullIcon color="disabled" />
+        )}
       </ListItemButton>
     </ListItem>
   );
