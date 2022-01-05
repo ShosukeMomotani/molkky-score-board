@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) =>
       height: `calc(100% - 60px)`,
       paddingBottom: theme.spacing(2),
     },
-    scoreButtons: {},
   })
 );
 
@@ -199,6 +198,7 @@ const App = () => {
             justifyContent="space-between"
             alignItems="center"
             spacing={1}
+            rowSpacing={1.5}
             columns={3}
             className={classes.scoreButtons}
           >
@@ -208,9 +208,10 @@ const App = () => {
                   variant="outlined"
                   color="success"
                   onClick={() => handleScore(value)}
-                  disabled={isGameFinished}
                   size="large"
+                  sx={{ fontWeight: 600 }}
                   fullWidth
+                  disabled={isGameFinished}
                 >
                   {value}
                 </Button>
@@ -218,7 +219,15 @@ const App = () => {
             ))}
             {
               <Grid item xs={2} sm={2} md={2}>
-                <Button variant="outlined" color="error" onClick={handleError} disabled={isGameFinished} fullWidth>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleError}
+                  size="large"
+                  sx={{ fontWeight: 600 }}
+                  fullWidth
+                  disabled={isGameFinished}
+                >
                   ERROR
                 </Button>
               </Grid>
@@ -229,6 +238,8 @@ const App = () => {
                   variant="outlined"
                   color="primary"
                   onClick={handleNextGame}
+                  size="large"
+                  sx={{ fontWeight: 600, fontSize: "0.7rem" }}
                   fullWidth
                   disabled={passedUserCount === 0}
                 >

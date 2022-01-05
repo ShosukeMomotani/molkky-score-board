@@ -138,7 +138,7 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
           }
         />
         <Typography
-          variant="h4"
+          variant="h3"
           fontWeight={selected ? "bold" : "normal"}
           color={player.isDropped() ? "gray" : "normal"}
         >
