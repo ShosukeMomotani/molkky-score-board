@@ -39,6 +39,7 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
 
   const [name, setName] = React.useState(player.name);
   const [score, setScore] = React.useState(player.score);
+  const [win, setWin] = React.useState(player.win);
   const [disqualification, setDisqualification] = React.useState(player.disqualification);
   const [error, setError] = React.useState(player.error);
   const [scoreSettings, setScoreSettings] = React.useState([player.scoreRestart, player.scoreMax]);
@@ -66,6 +67,7 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
             scoreRestart: scoreSettings[0],
             disqualification,
             error: disqualification ? error : 0,
+            win,
           })
         : null
     );
@@ -73,6 +75,8 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
     setName("");
     setScore(0);
     setError(0);
+    setWin(0);
+    setDisqualification(true);
     setScoreSettings([25, 50]);
   };
 
@@ -83,7 +87,7 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
         <Grid container rowSpacing={2} columnSpacing={2} alignItems="center" justifyContent="center">
           <Grid item xs={12}>
             <TextField
-              autoFocus
+              autoFocus={!name}
               id="name"
               variant="standard"
               label="名前"
@@ -129,6 +133,23 @@ export default function DialogEditUser({ player = new Player(""), onClose, open 
               }}
             />
           </Grid>
+          <Grid item xs={6}>
+            <TextField
+              id="win"
+              variant="standard"
+              label="勝利ポイント"
+              fullWidth
+              type="number"
+              value={String(win)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={(e) => {
+                setWin(Number(e.target.value));
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}></Grid>
           <Grid item xs={10}>
             <ScoreSlider
               min={0}
