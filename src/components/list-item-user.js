@@ -9,16 +9,13 @@ import {
   ListItemText,
   IconButton,
   ListItemAvatar,
+  Avatar,
   Typography,
   Menu,
   MenuItem,
   ListItemIcon,
   Badge,
 } from "@mui/material";
-import LooksOneIcon from "@mui/icons-material/LooksOne";
-import LooksTwoIcon from "@mui/icons-material/LooksTwo";
-import Looks3Icon from "@mui/icons-material/Looks3";
-import BlockIcon from "@mui/icons-material/Block";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,6 +24,7 @@ import BatteryChargingFullIcon from "@mui/icons-material/BatteryChargingFull";
 import BatteryFullIcon from "@mui/icons-material/BatteryFull";
 import Battery60Icon from "@mui/icons-material/Battery60";
 import Battery30Icon from "@mui/icons-material/Battery30";
+import PersonIcon from "@mui/icons-material/Person";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -64,6 +62,7 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
 
   return (
     <ListItem
+      disabled={player.isDropped()}
       disablePadding
       secondaryAction={
         <div>
@@ -109,17 +108,17 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
       onClick={onSelect}
     >
       <ListItemButton selected={selected}>
-        <ListItemAvatar sx={{ minWidth: 36 }}>
-          {player.isDropped() ? (
-            <BlockIcon sx={{ color: "gray" }} />
-          ) : player.rank === 1 ? (
-            <LooksOneIcon />
-          ) : player.rank === 2 ? (
-            <LooksTwoIcon />
-          ) : player.rank === 3 ? (
-            <Looks3Icon />
+        <ListItemAvatar sx={{ minWidth: 45 }}>
+          {player.rank > 0 ? (
+            <Badge color="secondary" overlap="circular" badgeContent={player.rank}>
+              <Avatar sx={{ width: 30, height: 30, bgcolor: "gray" }}>
+                <PersonIcon />
+              </Avatar>
+            </Badge>
           ) : (
-            <></>
+            <Avatar sx={{ width: 30, height: 30, bgcolor: "gray" }}>
+              <PersonIcon />
+            </Avatar>
           )}
         </ListItemAvatar>
         <ListItemText
