@@ -1,5 +1,6 @@
 import * as React from "react";
-import { createStyles, makeStyles, styled } from "@mui/styles";
+import { styled } from "@mui/material/styles";
+import { keyframes } from "@mui/system";
 
 import DialogEditUser from "./dialog-edit-user";
 
@@ -15,11 +16,12 @@ import {
   MenuItem,
   ListItemIcon,
   Badge,
+  Box,
 } from "@mui/material";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuIcon from "@mui/icons-material/Menu";
 import EditIcon from "@mui/icons-material/Edit";
-
 import BatteryChargingFullIcon from "@mui/icons-material/BatteryChargingFull";
 import BatteryFullIcon from "@mui/icons-material/BatteryFull";
 import Battery60Icon from "@mui/icons-material/Battery60";
@@ -35,18 +37,27 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    ereaErrorCount: {
-      width: "60px",
-      padding: theme.spacing(1),
-    },
-  })
-);
+const keyframesScore = keyframes`
+  0%, 15%, 85%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+`;
+const StyledScore = styled(Typography)(({ theme }) => ({
+  "&": {
+    animation: `${keyframesScore} 5s infinite ease`,
+  },
+}));
+
+const keyframesRemaining = keyframes`
+  0%, 15%, 85%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+`;
+const StyledRemaining = styled(Typography)(({ theme }) => ({
+  "&": {
+    animation: `${keyframesRemaining} 5s infinite ease`,
+  },
+}));
 
 export default function ListItemUser({ player, selected, onSelect, onDelete, onEditPlayer }) {
-  const classes = useStyles();
-
   const [anchorMenu, setAnchorMenu] = React.useState(null);
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
 
@@ -136,19 +147,51 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
             </StyledBadge>
           }
         />
-        <Typography
-          variant="h3"
-          fontWeight={selected ? "bold" : "normal"}
-          color={player.isDropped() ? "gray" : "normal"}
-        >
-          {player.score}
-        </Typography>
-        <Typography
-          variant="h6"
-          fontWeight={selected ? "bold" : "normal"}
-          sx={{ mx: 0.5 }}
-          color={player.isDropped() ? "gray" : "normal"}
-        >{`/${player.scoreMax}`}</Typography>
+        <Box sx={{ position: "relative" }}>
+          {selected ? (
+            <>
+              <StyledScore
+                variant="h3"
+                fontWeight={selected ? "bold" : "normal"}
+                color={player.isDropped() ? "gray" : "normal"}
+                sx={{ position: "absolute", right: "30px" }}
+              >
+                {player.score}
+              </StyledScore>
+              <StyledRemaining
+                variant="h6"
+                fontWeight={selected ? "bold" : "normal"}
+                color="gray"
+                sx={{ position: "absolute", right: "55px" }}
+              >
+                {"残り"}
+              </StyledRemaining>
+              <StyledRemaining
+                variant="h4"
+                fontWeight={selected ? "bold" : "normal"}
+                color="gray"
+                sx={{ position: "absolute", right: "30px" }}
+              >
+                {player.scoreMax - player.score}
+              </StyledRemaining>
+            </>
+          ) : (
+            <Typography
+              variant="h3"
+              fontWeight={selected ? "bold" : "normal"}
+              color={player.isDropped() ? "gray" : "normal"}
+              sx={{ position: "absolute", right: "30px" }}
+            >
+              {player.score}
+            </Typography>
+          )}
+          <Typography
+            variant="h6"
+            fontWeight={selected ? "bold" : "normal"}
+            sx={{ ml: 8, mr: 0.5 }}
+            color={player.isDropped() ? "gray" : "normal"}
+          >{`/${player.scoreMax}`}</Typography>
+        </Box>
         {!player.disqualification ? (
           <BatteryChargingFullIcon color="info" />
         ) : player.error === 0 ? (
