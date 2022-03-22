@@ -48,7 +48,7 @@ const StyledScore = styled(Typography)(({ theme }) => ({
 }));
 
 const keyframesRemaining = keyframes`
-  0%, 15%, 85%, 100% { opacity: 0; }
+  0%, 20%, 80%, 100% { opacity: 0; }
   50% { opacity: 1; }
 `;
 const StyledRemaining = styled(Typography)(({ theme }) => ({
@@ -159,7 +159,7 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
                 {player.score}
               </StyledScore>
               <StyledRemaining
-                variant="h6"
+                variant="subtitle1"
                 fontWeight={selected ? "bold" : "normal"}
                 color="gray"
                 sx={{ position: "absolute", right: "55px" }}
@@ -167,7 +167,7 @@ export default function ListItemUser({ player, selected, onSelect, onDelete, onE
                 {"残り"}
               </StyledRemaining>
               <StyledRemaining
-                variant="h4"
+                variant="h3"
                 fontWeight={selected ? "bold" : "normal"}
                 color="gray"
                 sx={{ position: "absolute", right: "30px" }}
