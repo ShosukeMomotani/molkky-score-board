@@ -198,9 +198,9 @@ const App = () => {
             justifyContent="space-between"
             alignItems="center"
             spacing={1}
-            rowSpacing={1.5}
+            rowSpacing={2}
             columns={3}
-            className={classes.scoreButtons}
+            sx={{ padding: 1 }}
           >
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
               <Grid item key={value} xs={1} sm={1} md={1}>
@@ -209,7 +209,7 @@ const App = () => {
                   color="success"
                   onClick={() => handleScore(value)}
                   size="large"
-                  sx={{ fontWeight: 600 }}
+                  sx={{ fontSize: "1.1rem", fontWeight: 600, padding: 0.2 }}
                   fullWidth
                   disabled={isGameFinished}
                 >
@@ -224,7 +224,7 @@ const App = () => {
                   color="error"
                   onClick={handleError}
                   size="large"
-                  sx={{ fontWeight: 600 }}
+                  sx={{ fontSize: "1.1rem", fontWeight: 600, padding: 0.2 }}
                   fullWidth
                   disabled={isGameFinished}
                 >
