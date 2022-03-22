@@ -45,6 +45,10 @@ const shuffle = ([...array]) => {
   return array;
 };
 
+const vibration = () => {
+  window.navigator.vibrate(200);
+};
+
 const App = () => {
   const classes = useStyles();
 
@@ -207,7 +211,10 @@ const App = () => {
                 <Button
                   variant="outlined"
                   color="success"
-                  onClick={() => handleScore(value)}
+                  onClick={() => {
+                    vibration();
+                    handleScore(value);
+                  }}
                   size="large"
                   sx={{ fontSize: "1.1rem", fontWeight: 600, padding: 0.2 }}
                   fullWidth
@@ -222,7 +229,10 @@ const App = () => {
                 <Button
                   variant="outlined"
                   color="error"
-                  onClick={handleError}
+                  onClick={() => {
+                    vibration();
+                    handleError();
+                  }}
                   size="large"
                   sx={{ fontSize: "1.1rem", fontWeight: 600, padding: 0.2 }}
                   fullWidth
