@@ -10,6 +10,7 @@ import MenuDrawer from "./components/menu-drawer";
 import ListUsers from "./components/list-users";
 import DialogEditUser from "./components/dialog-edit-user";
 import DialogNextGame from "./components/dialog-next-game";
+import AdsCard from "./components/ads-card";
 
 import {
   savePlayersStorage,
@@ -258,6 +259,7 @@ const App = () => {
               </Grid>
             }
           </Grid>
+          <AdsCard/>
         </Stack>
       </Div100vh>
       <DialogEditUser open={openAddUserDialog} onClose={handleCloseAddUserDialog} />
