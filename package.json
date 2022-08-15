@@ -10,7 +10,7 @@
     "@mui/styles": "^5.5.3",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^14.4.3",
     "array-move": "^4.0.0",
     "react": "^17.0.2",
     "react-div-100vh": "^0.7.0",
